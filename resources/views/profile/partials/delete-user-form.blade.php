@@ -1,0 +1,55 @@
+<section class="space-y-6 text-base-content">
+    <header>
+        <h2 class="text-lg font-medium">
+            Eliminar cuenta
+        </h2>
+
+        <p class="mt-1 text-sm">
+            Una vez que elimines tu cuenta, todos tus recursos y datos se eliminarán permanentemente. Antes de eliminar tu cuenta, descarga cualquier dato o información que desees conservar.
+        </p>
+    </header>
+
+    <x-danger-button
+        x-data=""
+        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
+    >Eliminar cuenta</x-danger-button>
+
+    <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
+        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
+            @csrf
+            @method('delete')
+
+            <h2 class="text-lg font-medium">
+                ¿Estás seguro de que deseas eliminar tu cuenta?
+            </h2>
+
+            <p class="mt-1 text-sm">
+                Una vez que elimines tu cuenta, todos tus recursos y datos se eliminarán permanentemente. Por favor, ingresa tu contraseña para confirmar que deseas eliminar tu cuenta de forma permanente.
+            </p>
+
+            <div class="mt-6">
+                <x-input-label for="password" value="Contraseña" class="sr-only" />
+
+                <x-text-input
+                    id="password"
+                    name="password"
+                    type="password"
+                    class="mt-1 block w-3/4"
+                    placeholder="Contraseña"
+                />
+
+                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    Cancelar
+                </x-secondary-button>
+
+                <x-danger-button class="ms-3">
+                    Eliminar cuenta
+                </x-danger-button>
+            </div>
+        </form>
+    </x-modal>
+</section>
